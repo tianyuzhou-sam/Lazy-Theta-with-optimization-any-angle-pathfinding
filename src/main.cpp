@@ -2,6 +2,8 @@
 
 #include "tileadaptor.hpp"
 
+#include <chrono> 
+
 int main()
 {
     constexpr int mapSizeX = 70;
@@ -9,7 +11,7 @@ int main()
 
     //Normaly would have used a std::vector of size x*y but just for this test it's
     //Gonna be way easier and readeable to do it this way
-    std::array<std::array<char, mapSizeY>, mapSizeX> map;
+    std::array<std::array<int, mapSizeY>, mapSizeX> map;
 
     Vectori startPoint = {1, 1};
     Vectori endPoint = {mapSizeX - 2, mapSizeY - 2};
@@ -20,21 +22,23 @@ int main()
         {
             for(int y = 0; y < size.y; y++)
             {
-                map[pos.x + x][pos.y + y] = '#';
+                map[pos.x + x][pos.y + y] = 255;
             }
         }
     };
 
+    // auto start = std::chrono::high_resolution_clock::now();
+
     //Instantiating our path adaptor
     //passing the map size and a lambda that return false if the tile is a wall
-    TileAdaptor adaptor({mapSizeX, mapSizeY}, [&map](const Vectori& vec){return map[vec.x][vec.y] != '#';});
+    TileAdaptor adaptor({mapSizeX, mapSizeY}, [&map](const Vectori& vec){return map[vec.x][vec.y] != 255;});
     //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
     Pathfinder pathfinder(adaptor, 100.f /*weight*/);
 
     //set everythings to space
     for(auto& cs : map)
         for(auto& c : cs)
-            c = ' ';
+            c = 0;
 
     //borders
     makeWall({0, 0}, {mapSizeX, 1});
@@ -53,16 +57,24 @@ int main()
     makeWall({mapSizeX - 20, 5}, {14, 1});
 
     //start and end point
-    map[startPoint.x][startPoint.y] = 'S';
-    map[endPoint.x][endPoint.y] = 'E';
+    map[startPoint.x][startPoint.y] = 0;
+    map[endPoint.x][endPoint.y] = 0;
+
+    auto start = std::chrono::high_resolution_clock::now();
 
     //The map was edited so we need to regenerate teh neighbors
     pathfinder.generateNodes();
+
+    // auto start = std::chrono::high_resolution_clock::now();
 
     //doing the search
     //merly to show the point of how it work
     //as it would have been way easier to simply transform the vector to id and pass it to search
     auto nodePath = pathfinder.search(adaptor.posToId(startPoint), adaptor.posToId(endPoint));
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); 
+    std::cout << duration.count() << std::endl; 
 
     //Convert Ids onto map position
     std::vector<Vectori> path;
@@ -101,13 +113,27 @@ int main()
     //nodes
     int x = 0;
     for(const auto& node : path)
-        map[node.x][node.y] = '0' + x++;
+        map[node.x][node.y] = 1 + x++;
 
     //draw map
     for(int y = 0; y < map[0].size(); y++)
     {
         for(int x = 0; x < map.size(); x++)
-            std::cout << map[x][y];
+        {
+            if ((startPoint.x == x) && (startPoint.y == y))
+                std::cout << "S";
+            else if ((endPoint.x == x) && (endPoint.y == y))
+                std::cout << "E";
+            else
+            {
+                if ((map[x][y] != 255) && (map[x][y] != 0))
+                    std::cout << map[x][y];
+                else if (map[x][y] == 255)
+                    std::cout << "#";
+                else
+                    std::cout << " ";
+            }
+        }
 
         std::cout << std::endl;
     }

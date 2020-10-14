@@ -1,5 +1,39 @@
 # Lazy Theta* with optimization pathfinding
 
+This repo has been tested with:
+* GCC 9.3.0, CMake 3.16.3, Ubuntu 20.04.1 LTS
+
+Dependencies
+============
+
+
+Build
+=====
+```
+$ git clone https://github.com/zehuilu/Lazy-Theta-with-optimization-any-angle-pathfinding.git
+$ cd <MAIN_DIRECTORY>
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+
+
+Usage
+=====
+
+For C++, the main function is `src/main.cpp`.
+```
+$ cd <MAIN_DIRECTORY>
+$ build/main_single
+```
+
+=========================================================================================
+
+
+
+
+
 Files:
 
 - pathfinding.hpp
