@@ -11,13 +11,14 @@ Dependencies
 For Python:
 * [pybind11](https://github.com/pybind/pybind11) If you only install `pybind11` by `pip`, it's possible that CMake can't find it. But you can install it by `apt` or `brew`.
 * [numpy](https://numpy.org/).
+* [matplotlib](https://matplotlib.org/).
 
 
 Build
 =====
 ```
 $ apt-get install pybind11 # For macOS: brew install pybind11
-$ pip3 install numpy
+$ pip3 install numpy matplotlib
 $ git clone https://github.com/zehuilu/Lazy-Theta-with-optimization-any-angle-pathfinding.git
 $ cd <MAIN_DIRECTORY>
 $ mkdir build

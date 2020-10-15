@@ -4,15 +4,7 @@ import sys
 sys.path.append(os.getcwd()+'/src')
 import numpy as np
 import matplotlib.pyplot as plt
-# from dataclasses import dataclass
 from random import randint
-
-
-# @dataclass
-# class WorldInfo:
-#     world_map: list
-#     map_width: int
-#     map_height: int
 
 
 class Simulator(object):
@@ -20,14 +12,20 @@ class Simulator(object):
     map_width: int
     map_height: int
     obs_size: float
+    value_non_obs: int
+    value_obs: int
 
 
     def __init__(self, 
         map_width_meter: float, 
         map_height_meter: float, 
-        resolution: int):
+        resolution: int,
+        value_non_obs: int,
+        value_obs: int):
         """
         Constructor
+
+        the cell is empty if value_non_obs, the cell is blocked if value_obs.
         """
 
         # map resolution, how many cells per meter
@@ -43,8 +41,11 @@ class Simulator(object):
         self.map_width = int(map_width)
         self.map_height = int(map_height)
 
+        self.value_non_obs = value_non_obs
+        self.value_obs = value_obs
+
         # create an empty map
-        self.map_array = np.array([1]*(self.map_width*self.map_height)).reshape(-1, self.map_width)
+        self.map_array = np.array([self.value_non_obs]*(self.map_width*self.map_height)).reshape(-1, self.map_width)
 
         # the length [meter] of box obstacles
         self.obs_size = 0.5 * self.resolution
@@ -59,13 +60,12 @@ class Simulator(object):
             
                 obs_mat = self.map_array[obs_center[1]-obs_half_size : obs_center[1]+obs_half_size+1][:, obs_center[0]-obs_half_size : obs_center[0]+obs_half_size+1]
                 self.map_array[obs_center[1]-obs_half_size : obs_center[1]+obs_half_size+1][:, obs_center[0]-obs_half_size : obs_center[0]+obs_half_size+1] = \
-                    9 * np.ones(obs_mat.shape)
+                    self.value_obs * np.ones(obs_mat.shape)
 
 
     def plot_single_path(self, *arguments):
         """
         Simulator.visualize(path) # plot a path
-        Simulator.visualize(path_full, path_short) # plot two paths
         path is a list for the trajectory. [x[0], y[0], x[1], y[1], ...]
         """
 
@@ -75,14 +75,12 @@ class Simulator(object):
             ax_map.scatter(arguments[0][0], arguments[0][1], label="start")
             ax_map.scatter(arguments[0][-2], arguments[0][-1], label="goal")
             ax_map.plot(arguments[0][0::2], arguments[0][1::2], label="path")
-            if len(arguments) == 2:
-                ax_map.plot(arguments[1][0::2], arguments[1][1::2], label="short path")
             ax_map.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
             ax_map.set_xlabel("x")
             ax_map.set_ylabel("y")
             plt.show()
         else:
-            print("A Star didn't find a path!")
+            print("Lazy Theta Star didn't find a path!")
 
 
     def plot_many_path(self, path_many: list, agent_position: list, targets_position: list):
