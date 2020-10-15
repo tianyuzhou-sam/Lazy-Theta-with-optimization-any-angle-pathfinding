@@ -13,6 +13,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# For python binding
+find_package(pybind11 REQUIRED)
+
 # include header directories
 include_directories(
    ${CMAKE_SOURCE_DIR}/include)
@@ -25,4 +28,7 @@ file(GLOB HEADER_FILES_H include/*.h)
 # test file
 
 # main file
-add_executable(main_single src/main_single.cpp ${HEADER_FILES_HPP})
+add_executable(main_single_path src/main_single_path.cpp ${HEADER_FILES_HPP})
+
+# Build c++ library such that python can call it
+pybind11_add_module(LazyThetaStarPython src/LazyThetaStarPython.cpp)

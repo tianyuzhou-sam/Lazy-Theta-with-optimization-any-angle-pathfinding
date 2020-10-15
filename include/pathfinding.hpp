@@ -37,9 +37,9 @@ public:
     {
         std::vector<std::pair<NodeId, Cost>> neighbors;
         uint32_t searchIndex = 0; //The last search at which it has bean generated, bassicacly used to decide if the node need to be reseted before we use it
-        NodeId parent;	// Parent of the node.
-        Cost g;			// Initialized to infinity when generated.
-        Cost h;		    // Initialized to the heuristic distance to the goal when generated.
+        NodeId parent;  // Parent of the node.
+        Cost g;         // Initialized to infinity when generated.
+        Cost h;         // Initialized to the heuristic distance to the goal when generated.
         ListType list;  // Initially NO_LIST, can be changed to OPEN_LIST or CLOSED_LIST.
     };
 

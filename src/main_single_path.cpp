@@ -78,10 +78,11 @@ int main()
         std::cout << path[idx] << ", " << path[idx+1] << std::endl;
     }
 
+
     // The following is the visualization
+
     //If we found a path we just want to remove the first and last node
     //Because it will be at our start and end position
-
     if(path.size())
     {
         path.pop_back();

@@ -1,4 +1,6 @@
 # Lazy Theta* with optimization pathfinding
+This is a customized version of Lazy-Theta-with-optimization-any-angle-pathfinding. Given a map and a set of starts and goals, this algorithm can return an optimal path. This repo has very easy-to-build-and-use C++ implementation and Python wrapper.
+
 
 This repo has been tested with:
 * GCC 9.3.0, CMake 3.16.3, Ubuntu 20.04.1 LTS
@@ -6,11 +8,16 @@ This repo has been tested with:
 
 Dependencies
 ============
+For Python:
+* [pybind11](https://github.com/pybind/pybind11) If you only install `pybind11` by `pip`, it's possible that CMake can't find it. But you can install it by `apt` or `brew`.
+* [numpy](https://numpy.org/).
 
 
 Build
 =====
 ```
+$ apt-get install pybind11 # For macOS: brew install pybind11
+$ pip3 install numpy
 $ git clone https://github.com/zehuilu/Lazy-Theta-with-optimization-any-angle-pathfinding.git
 $ cd <MAIN_DIRECTORY>
 $ mkdir build
@@ -23,10 +30,16 @@ $ make
 Usage
 =====
 
-For C++, the main function is `src/main_single.cpp`.
+For C++, the main file is `src/main_single_path.cpp`.
 ```
 $ cd <MAIN_DIRECTORY>
-$ build/main_single
+$ build/main_single_path
+```
+
+For Python, the main file is `test/test_LazyThetaStarPython.py`.
+```
+$ cd <MAIN_DIRECTORY>
+$ python3 test/test_LazyThetaStarPython.py
 ```
 
 =========================================================================================
