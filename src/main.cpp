@@ -1,8 +1,10 @@
 #include <iostream>
+#include <vector>
+#include <array>
 
 #include "tileadaptor.hpp"
 
-#include <chrono> 
+#include <chrono>
 
 int main()
 {
@@ -11,18 +13,18 @@ int main()
 
     //Normaly would have used a std::vector of size x*y but just for this test it's
     //Gonna be way easier and readeable to do it this way
-    std::array<std::array<int, mapSizeY>, mapSizeX> map;
+    std::array<std::array<int, mapSizeY>, mapSizeX> Map;
 
     Vectori startPoint = {1, 1};
     Vectori endPoint = {mapSizeX - 2, mapSizeY - 2};
 
-    auto makeWall = [&map](const Vectori& pos, const Vectori& size)
+    auto makeWall = [&Map](const Vectori& pos, const Vectori& size)
     {
         for(int x = 0; x < size.x; x++)
         {
             for(int y = 0; y < size.y; y++)
             {
-                map[pos.x + x][pos.y + y] = 255;
+                Map[pos.x + x][pos.y + y] = 255;
             }
         }
     };
@@ -31,12 +33,12 @@ int main()
 
     //Instantiating our path adaptor
     //passing the map size and a lambda that return false if the tile is a wall
-    TileAdaptor adaptor({mapSizeX, mapSizeY}, [&map](const Vectori& vec){return map[vec.x][vec.y] != 255;});
+    TileAdaptor adaptor({mapSizeX, mapSizeY}, [&Map](const Vectori& vec){return Map[vec.x][vec.y] != 255;});
     //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
     Pathfinder pathfinder(adaptor, 100.f /*weight*/);
 
     //set everythings to space
-    for(auto& cs : map)
+    for(auto& cs : Map)
         for(auto& c : cs)
             c = 0;
 
@@ -57,8 +59,8 @@ int main()
     makeWall({mapSizeX - 20, 5}, {14, 1});
 
     //start and end point
-    map[startPoint.x][startPoint.y] = 0;
-    map[endPoint.x][endPoint.y] = 0;
+    Map[startPoint.x][startPoint.y] = 0;
+    Map[endPoint.x][endPoint.y] = 0;
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -113,12 +115,12 @@ int main()
     //nodes
     int x = 0;
     for(const auto& node : path)
-        map[node.x][node.y] = 1 + x++;
+        Map[node.x][node.y] = 1 + x++;
 
     //draw map
-    for(int y = 0; y < map[0].size(); y++)
+    for(int y = 0; y < Map[0].size(); y++)
     {
-        for(int x = 0; x < map.size(); x++)
+        for(int x = 0; x < Map.size(); x++)
         {
             if ((startPoint.x == x) && (startPoint.y == y))
                 std::cout << "S";
@@ -126,9 +128,9 @@ int main()
                 std::cout << "E";
             else
             {
-                if ((map[x][y] != 255) && (map[x][y] != 0))
-                    std::cout << map[x][y];
-                else if (map[x][y] == 255)
+                if ((Map[x][y] != 255) && (Map[x][y] != 0))
+                    std::cout << Map[x][y];
+                else if (Map[x][y] == 255)
                     std::cout << "#";
                 else
                     std::cout << " ";

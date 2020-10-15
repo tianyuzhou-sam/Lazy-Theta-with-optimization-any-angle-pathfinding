@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+#include <array>
 #include "utility.hpp"
 #include "pathfinding.hpp"
 
@@ -162,7 +164,7 @@ public:
     //custom function used to map id to tile
     Vectori idToPos(const Pathfinder::NodeId id) const
     {
-        return {id % mMapSize.x, id / mMapSize.x};
+        return {static_cast<int>(id % mMapSize.x), static_cast<int>(id / mMapSize.x)};
     }
 
 private:

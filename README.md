@@ -2,6 +2,7 @@
 
 This repo has been tested with:
 * GCC 9.3.0, CMake 3.16.3, Ubuntu 20.04.1 LTS
+* Clang 12.0.0.0, CMake 3.18.3, macOS 10.15.7
 
 Dependencies
 ============

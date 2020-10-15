@@ -4,6 +4,7 @@
 #include <numeric>
 #include <algorithm>
 #include <functional>
+#include <array>
 
 class Pathfinder
 {
