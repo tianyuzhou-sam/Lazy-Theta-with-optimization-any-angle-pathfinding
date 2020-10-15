@@ -105,7 +105,7 @@ public:
                 nodes[currId].g = INFINITE_COST;
 
                 // Go over potential parents and update its parent to the parent that yields the lowest g-value for s.
-                for(const auto neighbordInfo : nodes[currId].neighbors)
+                for(const auto &neighbordInfo : nodes[currId].neighbors)
                 {
                     auto newParent = neighbordInfo.first;
 
@@ -122,7 +122,7 @@ public:
                 }
             }
 
-            for(const auto neighborInfo : nodes[currId].neighbors)
+            for(const auto &neighborInfo : nodes[currId].neighbors)
             {
                 auto neighborId = neighborInfo.first;
 
