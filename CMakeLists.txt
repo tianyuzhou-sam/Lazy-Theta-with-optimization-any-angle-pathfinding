@@ -23,6 +23,6 @@ file(GLOB HEADER_FILES_H include/*.h)
 
 # add the main file as executable
 # test file
-add_executable(test_single test/test_single.cpp ${HEADER_FILES_HPP})
+
 # main file
 add_executable(main_single src/main_single.cpp ${HEADER_FILES_HPP})

@@ -15,7 +15,8 @@ public:
     using NodeId = Pathfinder::NodeId;
     using Cost = Pathfinder::Cost;
 
-    TileAdaptor(const Vectori& mapSize, const std::function<bool(const Vectori&)>& mIsTraversable) : mMapSize(mapSize), mIsTraversable(mIsTraversable)
+    // if tile value = value_obs, then this tile is blocked.
+    TileAdaptor(const Vectori& mapSize, const std::vector<std::vector<int>> &Map, const int& value_obs) : mMapSize(mapSize), Map(Map), value_obs(value_obs)
     {
 
     }
@@ -53,28 +54,28 @@ public:
         // line of sight check. The following values are used to determine which cell to check to see if it is unblocked.
         Vectori offset;
 
-        if(diff.y < 0)
+        if(diff.y >= 0)
+        {
+            dir.y = 1;
+            offset.y = 1; // Cell is to the South
+        }
+        else
         {
             diff.y = -diff.y;
             dir.y = -1;
             offset.y = 0; // Cell is to the North
         }
-        else
-        {
-            dir.y = 1;
-            offset.y = 1; // Cell is to the South
-        }
 
-        if(diff.x < 0)
+        if(diff.x >= 0)
+        {
+            dir.x = 1;
+            offset.x = 1; // Cell is to the East
+        }
+        else
         {
             diff.x = -diff.x;
             dir.x = -1;
             offset.x = 0; // Cell is to the West
-        }
-        else
-        {
-            dir.x = 1;
-            offset.x = 1; // Cell is to the East
         }
 
         if(diff.x >= diff.y)
@@ -167,11 +168,17 @@ public:
         return {static_cast<int>(id % mMapSize.x), static_cast<int>(id / mMapSize.x)};
     }
 
+
 private:
     const Vectori mMapSize;
+    // 2D map
+    const std::vector<std::vector<int>> Map;
+    // if tile value = value_obs, then this tile is blocked.
+    const int value_obs;
 
-    //Function used to know if one tile of the map is travesable
-    //The adaptor could also store a reference or a pointer to the map directly
-    //But I find this way make the adaptor way more reusable
-    const std::function<bool(const Vectori&)> mIsTraversable;
+    inline bool mIsTraversable(const Vectori& vec) const
+    {
+        return Map[vec.x][vec.y] != value_obs;
+    }
+
 };
