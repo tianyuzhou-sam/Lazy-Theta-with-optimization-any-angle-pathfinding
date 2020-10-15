@@ -7,13 +7,17 @@
 #include <chrono>
 
 
-inline std::vector<Vectori> find_path(Vectori &startPoint, Vectori &endPoint, const std::vector<std::vector<int>> &Map)
+// inline std::vector<Vectori> find_path(Vectori &startPoint, Vectori &endPoint, const std::vector<std::vector<int>> &Map)
+inline std::vector<Vectori> find_path(
+    Vectori &startPoint,
+    Vectori &endPoint,
+    const std::vector<int> &Map,
+    const int &mapSizeX,
+    const int &mapSizeY)
 {
-    constexpr int value_obs = 255;
-
     //Instantiating our path adaptor
-    //passing the map size, the map, and value_obs
-    TileAdaptor adaptor({static_cast<int>(Map.size()), static_cast<int>(Map[0].size())}, Map, value_obs);
+    //passing the map size, and the map
+    TileAdaptor adaptor({mapSizeX, mapSizeY}, Map);
     
     //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
     Pathfinder pathfinder(adaptor, 100.f /*weight*/);

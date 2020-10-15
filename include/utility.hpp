@@ -39,7 +39,7 @@ struct Vector
 using Vectori = Vector<int>;
 using Vectorf = Vector<float>;
 
-float dist(Vectorf v1, Vectorf v2)
+inline float dist(Vectorf v1, Vectorf v2)
 {
     Vectorf v(v1.x-v2.x, v1.y-v2.y);
     return std::sqrt(v.x*v.x + v.y*v.y);

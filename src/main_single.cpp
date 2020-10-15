@@ -49,10 +49,22 @@ int main()
     Map[startPoint.x][startPoint.y] = 0;
     Map[endPoint.x][endPoint.y] = 0;
 
+    // a conversion from 2D (column major) map to a 1D (row major) map
+    std::vector<int> Map_1D;
+    int count = 0;
+    for(int y = 0; y < mapSizeY; y++)
+    {
+        for(int x = 0; x < mapSizeX; x++)
+        {
+            Map_1D.push_back(Map[x][y]);
+            count++;
+        }
+    }
+    
     auto start = std::chrono::high_resolution_clock::now();
 
 
-    std::vector<Vectori> path = find_path(startPoint, endPoint, Map);
+    std::vector<Vectori> path = find_path(startPoint, endPoint, Map_1D, mapSizeX, mapSizeY);
 
 
     auto stop = std::chrono::high_resolution_clock::now();

@@ -15,8 +15,7 @@ public:
     using NodeId = Pathfinder::NodeId;
     using Cost = Pathfinder::Cost;
 
-    // if tile value = value_obs, then this tile is blocked.
-    TileAdaptor(const Vectori& mapSize, const std::vector<std::vector<int>> &Map, const int& value_obs) : mMapSize(mapSize), Map(Map), value_obs(value_obs)
+    TileAdaptor(const Vectori& mapSize, const std::vector<int> &Map) : mMapSize(mapSize), Map(Map)
     {
 
     }
@@ -171,14 +170,12 @@ public:
 
 private:
     const Vectori mMapSize;
-    // 2D map
-    const std::vector<std::vector<int>> Map;
-    // if tile value = value_obs, then this tile is blocked.
-    const int value_obs;
+    // 1D map
+    const std::vector<int> Map;
 
     inline bool mIsTraversable(const Vectori& vec) const
     {
-        return Map[vec.x][vec.y] != value_obs;
+        return Map[vec.y * mMapSize.x + vec.x] != 255;
     }
 
 };
