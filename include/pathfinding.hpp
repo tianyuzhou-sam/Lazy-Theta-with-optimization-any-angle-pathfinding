@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <functional>
 #include <array>
+#include "utility.hpp"
+
 
 class Pathfinder
 {
@@ -21,9 +23,9 @@ public:
         friend Pathfinder;
 
         virtual size_t getNodeCount() const = 0;
-        virtual Cost distance(const NodeId n1, const NodeId n2) const = 0;
-        virtual bool lineOfSight(const NodeId n1, const NodeId n2) const = 0;
-        virtual std::vector<std::pair<NodeId, Cost>> getNodeNeighbors(const NodeId id) const = 0;
+        virtual Cost distance(const NodeId &n1, const NodeId &n2) const = 0;
+        virtual bool lineOfSight(const NodeId &n1, const NodeId &n2) const = 0;
+        virtual std::vector<std::pair<NodeId, Cost>> getNodeNeighbors(const NodeId &id) const = 0;
     };
 
     static constexpr const float EPSILON = 0.00001f;
@@ -65,20 +67,20 @@ public:
         generateNodes();
     }
 
-    template<typename DataType>
-    std::vector<DataType> search(const DataType& start, const DataType& end, std::function<DataType(const NodeId)> idToData, std::function<NodeId(const DataType&)> dataToId)
-    {
-        const auto path = search(dataToId(start), dataToId(end));
-        std::vector<DataType> finalPath;
-        finalPath.reserve(path.size());
+    // template<typename DataType>
+    // std::vector<DataType> search(const DataType& start, const DataType& end, std::function<DataType(const NodeId)> idToData, std::function<NodeId(const DataType&)> dataToId)
+    // {
+    //     const auto path = search(dataToId(start), dataToId(end));
+    //     std::vector<DataType> finalPath;
+    //     finalPath.reserve(path.size());
 
-        for(const auto id : path)
-            finalPath.push_back(idToData(id));
+    //     for(const auto id : path)
+    //         finalPath.push_back(idToData(id));
 
-        return finalPath;
-    }
+    //     return finalPath;
+    // }
 
-    std::vector<NodeId> search(const NodeId startId, const NodeId endId)
+    std::vector<int> search(const NodeId &startId, const NodeId &endId, const Vectori &mMapSize)
     {
         openList.clear();
 
@@ -144,26 +146,26 @@ public:
             }
         }
 
-        std::vector<NodeId> path;
+        std::vector<int> path;
 
         if(nodes[endId].g < INFINITE_COST)
         {
-    //        ValidateParent(endId, endId);
             NodeId curr = endId;
             while(curr != startId)
             {
-                path.push_back(curr);
+                path.push_back(curr / mMapSize.x);
+                path.push_back(curr % mMapSize.x);
                 curr = nodes[curr].parent;
             }
-
-            path.push_back(curr);
+            path.push_back(curr / mMapSize.x);
+            path.push_back(curr % mMapSize.x);
             std::reverse(path.begin(), path.end());
         }
 
         return path;
     }
 
-    void generateNodes()
+    inline void generateNodes()
     {
         nodes.clear();
         nodes.resize(adaptor.getNodeCount());
@@ -184,7 +186,7 @@ private:
 
     uint32_t currentSearch = 0;
 
-    void generateState(NodeId s, NodeId goal)
+    inline void generateState(NodeId s, NodeId goal)
     {
         if(nodes[s].searchIndex != currentSearch)
         {
@@ -195,7 +197,7 @@ private:
         }
     }
 
-    void addToOpen(NodeId id)
+    inline void addToOpen(NodeId id)
     {
         // If it is already in the open list, remove it and do a sorted insert
         if (nodes[id].list == OPEN_LIST)
@@ -214,21 +216,21 @@ private:
 
     }
 
-    const HeapElement getMin() const
+    inline const HeapElement getMin() const
     {
         return openList.back();
     }
 
-    void popMin()
+    inline void popMin()
     {
         nodes[openList.back().id].list = CLOSED_LIST;
         openList.pop_back();
 
     }
 
-    template< typename T >
+template< typename T >
 typename std::vector<T>::iterator
-   insert_sorted( std::vector<T> & vec, T const& item )
+   inline insert_sorted( std::vector<T> & vec, T const& item )
 {
     return vec.insert
         (
@@ -239,7 +241,7 @@ typename std::vector<T>::iterator
 
 template< typename T, typename Pred >
 typename std::vector<T>::iterator
-    insert_sorted( std::vector<T> & vec, T const& item, Pred pred )
+    inline insert_sorted( std::vector<T> & vec, T const& item, Pred pred )
 {
     return vec.insert
         (

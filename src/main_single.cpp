@@ -51,6 +51,7 @@ int main()
 
     // a conversion from 2D (column major) map to a 1D (row major) map
     std::vector<int> Map_1D;
+    Map_1D.reserve(mapSizeX * mapSizeY);
     int count = 0;
     for(int y = 0; y < mapSizeY; y++)
     {
@@ -60,30 +61,39 @@ int main()
             count++;
         }
     }
-    
+
     auto start = std::chrono::high_resolution_clock::now();
 
-
-    std::vector<Vectori> path = find_path(startPoint, endPoint, Map_1D, mapSizeX, mapSizeY);
+    // solve it
+    std::vector<int> path = find_path(startPoint, endPoint, Map_1D, mapSizeX, mapSizeY);
 
 
     auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); 
-    std::cout << duration.count() << std::endl; 
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    std::cout << "Time used [microseconds]:" << duration.count() << std::endl;
 
+    std::cout << "This is the path:" << std::endl;
+    for (unsigned long idx=0; idx < path.size(); idx=idx+2)
+    {
+        std::cout << path[idx] << ", " << path[idx+1] << std::endl;
+    }
 
+    // The following is the visualization
     //If we found a path we just want to remove the first and last node
     //Because it will be at our start and end position
+
     if(path.size())
     {
         path.pop_back();
+        path.pop_back();
+        path.erase(path.begin());
         path.erase(path.begin());
     }
 
     //nodes
     int x = 0;
-    for(const auto& node : path)
-        Map[node.x][node.y] = 1 + x++;
+    for(unsigned long idx=0; idx < path.size(); idx=idx+2)
+        Map[path[idx]][path[idx+1]] = 1 + x++;
 
     //draw map
     for(int y = 0; y < static_cast<int>(Map[0].size()); y++)

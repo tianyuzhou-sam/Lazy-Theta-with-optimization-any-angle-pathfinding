@@ -25,12 +25,12 @@ struct Vector
         y = other.y;
     }
 
-    Vector<T> operator-(const Vector<T>& other) const
+    inline Vector<T> operator-(const Vector<T>& other) const
     {
         return {x - other.x, y - other.y};
     }
 
-    Vector<T> operator+(const Vector<T>& other) const
+    inline Vector<T> operator+(const Vector<T>& other) const
     {
         return {x + other.x, y + other.y};
     }
