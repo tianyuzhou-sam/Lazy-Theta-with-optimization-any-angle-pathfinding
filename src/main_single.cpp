@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <array>
-
-#include "tileadaptor.hpp"
-
 #include <chrono>
+#include "tileadaptor.hpp"
+#include "find_path.hpp"
+
 
 int main()
 {
@@ -49,56 +49,15 @@ int main()
     Map[startPoint.x][startPoint.y] = 0;
     Map[endPoint.x][endPoint.y] = 0;
 
-
-    // auto start = std::chrono::high_resolution_clock::now();
-
-    //Instantiating our path adaptor
-    //passing the map size and a lambda that return false if the tile is a wall
-    TileAdaptor adaptor({mapSizeX, mapSizeY}, [&Map](const Vectori& vec){return Map[vec.x][vec.y] != 255;});
-    //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
-    Pathfinder pathfinder(adaptor, 100.f /*weight*/);
-
-
     auto start = std::chrono::high_resolution_clock::now();
 
-    //The map was edited so we need to regenerate teh neighbors
-    pathfinder.generateNodes();
 
-    // auto start = std::chrono::high_resolution_clock::now();
+    std::vector<Vectori> path = find_path(startPoint, endPoint, Map);
 
-    //doing the search
-    //merly to show the point of how it work
-    //as it would have been way easier to simply transform the vector to id and pass it to search
-    auto nodePath = pathfinder.search(adaptor.posToId(startPoint), adaptor.posToId(endPoint));
 
     auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); 
     std::cout << duration.count() << std::endl; 
-
-    //Convert Ids onto map position
-    std::vector<Vectori> path;
-    path.reserve(nodePath.size());
-
-    for(const auto id : nodePath)
-        path.push_back(adaptor.idToPos(id));
-
-
-    //There is also a serach function that do the conversion between your data type
-    //And the id, it take lambdas to convert between the two
-    //Here's an exemple of how it would be called for this code
-//    auto path = pathfinder.search(startPoint, endPoint,
-//                                        {
-//                                            [&adaptor](const auto id)
-//                                            {
-//                                                return adaptor.idToPos(id);
-//                                            }
-//                                        },
-//                                        {
-//                                            [&adaptor](const auto& data)
-//                                            {
-//                                                return adaptor.posToId(data);
-//                                            }
-//                                        });
 
 
     //If we found a path we just want to remove the first and last node

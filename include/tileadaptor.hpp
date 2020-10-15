@@ -20,13 +20,13 @@ public:
 
     }
 
-    virtual size_t getNodeCount() const override
+    inline virtual size_t getNodeCount() const override
     {
         return mMapSize.x * mMapSize.y;
     }
 
     //return the distance between two node
-    virtual Cost distance(const NodeId n1, const NodeId n2) const override
+    inline virtual Cost distance(const NodeId n1, const NodeId n2) const override
     {
         return dist((Vectorf)idToPos(n1), (Vectorf)idToPos(n2));
     }
@@ -34,7 +34,7 @@ public:
     //Return true if there is a direct path between n1 and n2
     //Totally not stole this code and did some heavy rewrite
     //The original code was way worse, trust me
-    virtual bool lineOfSight(const NodeId n1, const NodeId n2) const override
+    inline virtual bool lineOfSight(const NodeId n1, const NodeId n2) const override
     {
         // This line of sight check uses only integer values. First it checks whether the movement along the x or the y axis is longer and moves along the longer
         // one cell by cell. dx and dy specify how many cells to move in each direction. Suppose dx is longer and we are moving along the x axis. For each
@@ -130,7 +130,7 @@ public:
 
     //return a vector of all the neighbors ids and the cost to travel to them
     //In this adaptor we only need to check the four tileneibors and the cost is always 1
-    virtual std::vector<std::pair<NodeId, Cost>> getNodeNeighbors(const NodeId id) const override
+    inline virtual std::vector<std::pair<NodeId, Cost>> getNodeNeighbors(const NodeId id) const override
     {
         auto pos = idToPos(id);
 
@@ -156,13 +156,13 @@ public:
     }
 
     //custom function used to map tile to id
-    Pathfinder::NodeId posToId(const Vectori& pos) const
+    inline Pathfinder::NodeId posToId(const Vectori& pos) const
     {
         return pos.y * mMapSize.x + pos.x;
     }
 
     //custom function used to map id to tile
-    Vectori idToPos(const Pathfinder::NodeId id) const
+    inline Vectori idToPos(const Pathfinder::NodeId id) const
     {
         return {static_cast<int>(id % mMapSize.x), static_cast<int>(id / mMapSize.x)};
     }
