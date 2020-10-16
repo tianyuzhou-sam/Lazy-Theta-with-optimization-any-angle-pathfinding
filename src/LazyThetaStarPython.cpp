@@ -64,6 +64,13 @@ inline std::vector<std::vector<int>> FindPathMany(
         //doing the search
         std::vector<int> path_single = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
         path_many.push_back(path_single);
+
+        // Regenerate the neighbors for next run
+        if (idx < start_goal_pair.size()-1)
+        {
+            pathfinder.generateNodes();
+        }
+
     }
 
     return path_many;
