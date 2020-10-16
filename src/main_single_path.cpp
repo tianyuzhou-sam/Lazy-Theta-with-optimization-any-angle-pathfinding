@@ -14,9 +14,6 @@ int main()
     // initialize the map, 0 means no obstacles; each sub vector is a column.
     std::vector<std::vector<int>> Map(mapSizeX, std::vector<int> (mapSizeY, 0));
 
-    Vectori startPoint = {1, 1};
-    Vectori endPoint = {mapSizeX - 2, mapSizeY - 2};
-
     // This is a lambda function to create the wall
     auto makeWall = [&Map](const Vectori& pos, const Vectori& size)
     {
@@ -45,31 +42,32 @@ int main()
     makeWall({20, 0}, {1, mapSizeY - 4});
     makeWall({mapSizeX - 20, 5}, {14, 1});
 
+    int start[2] = {1, 1};
+    int end[2] = {mapSizeX - 2, mapSizeY - 2};
+
     //start and end point
-    Map[startPoint.x][startPoint.y] = 0;
-    Map[endPoint.x][endPoint.y] = 0;
+    Map[start[0]][start[1]] = 0;
+    Map[end[0]][end[1]] = 0;
 
     // a conversion from 2D (column major) map to a 1D (row major) map
     std::vector<int> Map_1D;
     Map_1D.reserve(mapSizeX * mapSizeY);
-    int count = 0;
     for(int y = 0; y < mapSizeY; y++)
     {
         for(int x = 0; x < mapSizeX; x++)
         {
             Map_1D.push_back(Map[x][y]);
-            count++;
         }
     }
 
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start_time = std::chrono::high_resolution_clock::now();
 
     // solve it
-    std::vector<int> path = find_path(startPoint, endPoint, Map_1D, mapSizeX, mapSizeY);
+    std::vector<int> path = find_path(start, end, Map_1D, mapSizeX, mapSizeY);
 
 
-    auto stop = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    auto stop_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_time - start_time);
     std::cout << "Time used [microseconds]:" << duration.count() << std::endl;
 
     std::cout << "This is the path:" << std::endl;
@@ -101,9 +99,9 @@ int main()
     {
         for(int x = 0; x < static_cast<int>(Map.size()); x++)
         {
-            if ((startPoint.x == x) && (startPoint.y == y))
+            if ((start[0] == x) && (start[1] == y))
                 std::cout << "S";
-            else if ((endPoint.x == x) && (endPoint.y == y))
+            else if ((end[0] == x) && (end[1] == y))
                 std::cout << "E";
             else
             {

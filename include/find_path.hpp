@@ -1,3 +1,6 @@
+#ifndef FIND_PATH_HPP
+#define FIND_PATH_HPP
+
 #include <iostream>
 #include <vector>
 #include <array>
@@ -6,8 +9,8 @@
 
 
 inline std::vector<int> find_path(
-    Vectori &startPoint,
-    Vectori &endPoint,
+    int *start,
+    int *end,
     const std::vector<int> &Map,
     const int &mapSizeX,
     const int &mapSizeY)
@@ -27,7 +30,9 @@ inline std::vector<int> find_path(
     //doing the search
     //merly to show the point of how it work
     //as it would have been way easier to simply transform the vector to id and pass it to search
-    std::vector<int> Path = pathfinder.search(adaptor.posToId(startPoint), adaptor.posToId(endPoint), adaptor.mMapSize);
+    std::vector<int> Path = pathfinder.search(start[1]*mapSizeX+start[0], end[1]*mapSizeX+end[0], adaptor.mMapSize);
 
     return Path;
 }
+
+#endif

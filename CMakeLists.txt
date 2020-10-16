@@ -29,6 +29,7 @@ file(GLOB HEADER_FILES_H include/*.h)
 
 # main file
 add_executable(main_single_path src/main_single_path.cpp ${HEADER_FILES_HPP})
+add_executable(main_many_path src/main_many_path.cpp ${HEADER_FILES_HPP})
 
 # Build c++ library such that python can call it
 pybind11_add_module(LazyThetaStarPython src/LazyThetaStarPython.cpp)

@@ -158,7 +158,7 @@ public:
     }
 
     //custom function used to map tile to id
-    inline Pathfinder::NodeId posToId(const Vectori& pos) const
+    inline Pathfinder::NodeId posToId(const Vectori &pos) const
     {
         return pos.y * mMapSize.x + pos.x;
     }
@@ -167,6 +167,12 @@ public:
     inline Vectori idToPos(const Pathfinder::NodeId &id) const
     {
         return {static_cast<int>(id % mMapSize.x), static_cast<int>(id / mMapSize.x)};
+    }
+
+    //custom function used to map tile to id
+    inline Pathfinder::NodeId posToIdArray(const int *pos) const
+    {
+        return pos[1] * mMapSize.x + pos[0];
     }
 
 

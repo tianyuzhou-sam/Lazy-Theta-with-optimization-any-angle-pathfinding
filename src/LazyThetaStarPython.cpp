@@ -34,7 +34,8 @@ inline std::vector<int> FindPath(
     //doing the search
     //merly to show the point of how it work
     //as it would have been way easier to simply transform the vector to id and pass it to search
-    std::vector<int> Path = pathfinder.search(adaptor.posToId({startPoint[0], startPoint[1]}), adaptor.posToId({endPoint[0], endPoint[1]}), mapSize);
+    std::vector<int> Path = pathfinder.search(startPoint[1]*mapSizeX+startPoint[0], endPoint[1]*mapSizeX+endPoint[0], mapSize);
+
 
     // // Visualization for debug
     // std::cout << "This is the path:" << std::endl;
