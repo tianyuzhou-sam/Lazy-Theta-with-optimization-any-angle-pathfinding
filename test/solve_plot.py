@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # create a simulator
     Simulator = helper.Simulator(map_width_meter, map_height_meter, map_resolution, value_non_obs, value_obs)
     # number of obstacles
-    num_obs = 150
+    num_obs = 100
     # generate random obstacles
     Simulator.generate_random_obs(num_obs)
     # convert 2D numpy array to 1D list
@@ -33,15 +33,15 @@ if __name__ == "__main__":
     end = [35, 34]
     # solve it
     t0 = time.time()
-    path_short = LazyThetaStarPython.FindPath(start, end, world_map, Simulator.map_width, Simulator.map_height)
+    path_single = LazyThetaStarPython.FindPath(start, end, world_map, Simulator.map_width, Simulator.map_height)
     t1 = time.time()
     print("Time used for a single path is [sec]: " + str(t1-t0))
     print("This is the path.")
-    for idx in range(0,len(path_short),2):
-        str_print = str(path_short[idx]) + ', ' + str(path_short[idx+1])
+    for idx in range(0,len(path_single),2):
+        str_print = str(path_single[idx]) + ', ' + str(path_single[idx+1])
         print(str_print)
     # visualization (uncomment next line if you want to visualize a single path)
-    Simulator.plot_single_path(path_short)    
+    Simulator.plot_single_path(path_single)    
 
 
     # This is for an agent and a set of targets

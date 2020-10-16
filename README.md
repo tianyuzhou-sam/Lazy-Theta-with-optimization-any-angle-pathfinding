@@ -49,24 +49,45 @@ $ cd <MAIN_DIRECTORY>
 $ python3 test/solve_plot.py
 ```
 
-=========================================================================================
+Example
+=======
+
+**Python**
+
+To call the Lazy Theta Star solver in Python, a simple example is shown below. More details are in `test/solve_plot.py` and `test/test_LazyThetaStarPython.py`.
+
+```python
+import LazyThetaStarPython
+map_width = 20
+map_height = 20
+# world_map is a 1D list, 0 means no obstacles, 255 means blocked by obstacles
+start = [5, 8] # coordinates for start
+goal = [35, 34] # coordinates for goal
+# solve it
+path_single = LazyThetaStarPython.FindPath(start, goal, world_map, map_width, map_height)
+```
+
+Run `test/solve_plot.py`, the result is shown below. Time used is 0.55 ms.
+![single path](doc/path_single.png?raw=true "Single Path")
 
 
+**C++**
+
+To call the Lazy Theta Star solver in C++, a simple example is shown below. More details are in `src/main_single_path.cpp`.
+
+```c++
+// ignore all the headers, see more details in src/main_single_path.cpp
+int mapSizeX = 70; // width
+int mapSizeY = 20; // length
+int start[2] = {1, 1};
+int end[2] = {68, 18};
+// Map_1D is a std::vector<int>, 0 means no obstacles, 255 means blocked by obstacles
+// solve it
+std::vector<int> path = find_path(start, end, Map_1D, mapSizeX, mapSizeY);
+```
 
 
-
-Files:
-
-- pathfinding.hpp
-  - The main file, the only one you need
-  - Contain the algoritm 
-- tileadaptor.hpp
-  - To use the pathfinding class you'll need an adaptor, this is an exemple adaptor for tile grid
-- utility.hpp
-  - Dummy vector class and distance function used by tileadaptor
-- main.cpp
-  - Console based demo
-
+Run `src/main_single_path.cpp`, the result is shown on the console. Time used is 0.697 ms.
 ```
 ######################################################################
 #S   #              #                                                #
@@ -93,15 +114,3 @@ S  = start
 E  = end
 number = path nodes
 ```
-
-Implementation of the algorithm described here: http://aigamedev.com/open/tutorial/lazy-theta-star/
-
-At first I could find any code a part from this and honestly I had no idea of what line 37-38 means
-![pseudo cat](http://aigamedev.com/wp-content/blogs.dir/5/files/2013/07/fig53-full.png)
-
-After some amount of research I found this page http://idm-lab.org/project-o.html which provided me with some code.
-I rewrote most of it because the code style dind't suite me and to take advantage of C++14.
-
-I also made it more modular so that it can be used for grid, hexagonTile, polygon map, anything where you need to find a path between to point.
-
-Also added the possibility to use weighted h-value as described in the first link, it make the search faster but may give slitghly longer path.
