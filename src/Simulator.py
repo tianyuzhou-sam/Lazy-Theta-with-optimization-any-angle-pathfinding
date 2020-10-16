@@ -17,6 +17,7 @@ class Simulator(object):
     value_obs: int
     size_obs_width: int
     size_obs_height: int
+    obs_left_top_corner_list: list
 
     def __init__(self, 
         map_width_meter: float, 
@@ -64,7 +65,6 @@ class Simulator(object):
                 self.obs_left_top_corner_list.append(obs_left_top_corner)
 
                 obs_mat = self.map_array[obs_left_top_corner[1]:obs_left_top_corner[1]+self.size_obs_height+1][:, obs_left_top_corner[0]:obs_left_top_corner[0]+self.size_obs_width+1]
-                print(obs_mat.shape)
 
                 self.map_array[obs_left_top_corner[1]:obs_left_top_corner[1]+self.size_obs_height+1][:, obs_left_top_corner[0]:obs_left_top_corner[0]+self.size_obs_width+1] \
                     = self.value_obs * np.ones(obs_mat.shape)
