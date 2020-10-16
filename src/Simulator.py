@@ -13,10 +13,10 @@ class Simulator(object):
     resolution: int
     map_width: int
     map_height: int
-    obs_size: float
     value_non_obs: int
     value_obs: int
-
+    size_obs_width: int
+    size_obs_height: int
 
     def __init__(self, 
         map_width_meter: float, 
@@ -49,25 +49,25 @@ class Simulator(object):
         # create an empty map
         self.map_array = np.array([self.value_non_obs]*(self.map_width*self.map_height)).reshape(-1, self.map_width)
 
-        # the length [meter] of box obstacles
-        # self.obs_size = 1.0 * self.resolution
-        self.obs_size = 2
-
         # a 2D list, each element is x and y coordinates of the obstacle's left top corner
         self.obs_left_top_corner_list = []
 
 
-    def generate_random_obs(self, num_obs: int):
-        obs_half_size = round(self.obs_size/2)
+    def generate_random_obs(self, num_obs: int, size_obs: list):
+        self.size_obs_width = round(size_obs[0] * self.resolution)
+        self.size_obs_height = round(size_obs[1] * self.resolution)
         if num_obs > 0:
             for idx_obs in range(0, num_obs):
                 # [width, height]
-                obs_left_top_corner = [randint(1+obs_half_size,self.map_width-obs_half_size-1), randint(1+obs_half_size, self.map_height-obs_half_size-1)]
+                obs_left_top_corner = [randint(1,self.map_width-self.size_obs_width-1), randint(1, self.map_height-self.size_obs_height-1)]
 
                 self.obs_left_top_corner_list.append(obs_left_top_corner)
 
-                self.map_array[obs_left_top_corner[1]:obs_left_top_corner[1]+2][:, obs_left_top_corner[0]:obs_left_top_corner[0]+2] \
-                    = self.value_obs * np.ones((2,2))
+                obs_mat = self.map_array[obs_left_top_corner[1]:obs_left_top_corner[1]+self.size_obs_height+1][:, obs_left_top_corner[0]:obs_left_top_corner[0]+self.size_obs_width+1]
+                print(obs_mat.shape)
+
+                self.map_array[obs_left_top_corner[1]:obs_left_top_corner[1]+self.size_obs_height+1][:, obs_left_top_corner[0]:obs_left_top_corner[0]+self.size_obs_width+1] \
+                    = self.value_obs * np.ones(obs_mat.shape)
 
 
     def plot_single_path(self, *arguments):
@@ -83,7 +83,7 @@ class Simulator(object):
             for idx in range(len(self.obs_left_top_corner_list)):
                 # Create a Rectangle patch
                 print(self.obs_left_top_corner_list[idx])
-                rect = patches.Rectangle(self.obs_left_top_corner_list[idx], 1, 1, linewidth=1, edgecolor='k', facecolor='k')
+                rect = patches.Rectangle(self.obs_left_top_corner_list[idx], self.size_obs_width, self.size_obs_height, linewidth=1, edgecolor='k', facecolor='k')
                 # Add the patch to the Axes
                 ax_map.add_patch(rect)
 
@@ -112,7 +112,7 @@ class Simulator(object):
         for idx in range(len(self.obs_left_top_corner_list)):
             # Create a Rectangle patch
             print(self.obs_left_top_corner_list[idx])
-            rect = patches.Rectangle(self.obs_left_top_corner_list[idx], 1, 1, linewidth=1, edgecolor='k', facecolor='k')
+            rect = patches.Rectangle(self.obs_left_top_corner_list[idx], self.size_obs_width, self.size_obs_height, linewidth=1, edgecolor='k', facecolor='k')
             # Add the patch to the Axes
             ax_map.add_patch(rect)
 

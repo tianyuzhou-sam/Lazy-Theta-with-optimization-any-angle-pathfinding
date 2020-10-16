@@ -21,9 +21,11 @@ if __name__ == "__main__":
     # create a simulator
     Simulator = helper.Simulator(map_width_meter, map_height_meter, map_resolution, value_non_obs, value_obs)
     # number of obstacles
-    num_obs = 100
+    num_obs = 50
+    # [width, length] size of each obstacle [meter]
+    size_obs = [1, 1]
     # generate random obstacles
-    Simulator.generate_random_obs(num_obs)
+    Simulator.generate_random_obs(num_obs, size_obs)
     # convert 2D numpy array to 1D list
     world_map = Simulator.map_array.flatten().tolist()
 
