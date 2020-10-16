@@ -43,6 +43,12 @@ $ cd <MAIN_DIRECTORY>
 $ python3 test/test_LazyThetaStarPython.py
 ```
 
+Or `test/solve_plot.py`.
+```
+$ cd <MAIN_DIRECTORY>
+$ python3 test/solve_plot.py
+```
+
 =========================================================================================
 
 

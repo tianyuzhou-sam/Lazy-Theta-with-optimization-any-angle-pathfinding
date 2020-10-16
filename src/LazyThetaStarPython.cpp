@@ -8,8 +8,66 @@
 #include <pybind11/stl.h>
 
 #include "tileadaptor.hpp"
-#include "find_path.hpp"
 #include "utility.hpp"
+#include "get_combination.hpp"
+
+
+inline std::vector<std::vector<int>> FindPathMany(
+    std::vector<int> agent_position,
+    std::vector<int> targets_position,
+    const std::vector<int> &Map,
+    const int &mapSizeX,
+    const int &mapSizeY)
+{
+    std::vector<int> start_goal_pair = get_combination(targets_position.size()/2 + 1, 2);
+    std::vector<std::vector<int>> path_many;
+    // path_many.reserve(start_goal_pair.size());
+
+    //Instantiating our path adaptor
+    //passing the map size, and the map
+    Vectori mapSize(mapSizeX, mapSizeY);
+    TileAdaptor adaptor(mapSize, Map);
+    //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
+    Pathfinder pathfinder(adaptor, 100.f /*weight*/);
+
+    for (unsigned long idx = 0; idx < start_goal_pair.size(); idx = idx + 2)
+    {
+        int start_idx = start_goal_pair[idx];
+        int goal_idx = start_goal_pair[idx+1];
+
+        int start[2];
+        int goal[2];
+
+        if (start_idx != 0)
+        {
+            start[0] = targets_position[2*(start_idx-1)];
+            start[1] = targets_position[2*(start_idx-1)+1];
+        }
+        else
+        {
+            start[0] = agent_position[0];
+            start[1] = agent_position[1];
+        }
+
+        if (goal_idx != 0)
+        {
+            goal[0] = targets_position[2*(goal_idx-1)];
+            goal[1] = targets_position[2*(goal_idx-1)+1];
+
+        }
+        else
+        {
+            goal[0] = agent_position[0];
+            goal[1] = agent_position[1];
+        }
+
+        //doing the search
+        std::vector<int> path_single = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
+        path_many.push_back(path_single);
+    }
+
+    return path_many;
+}
 
 
 inline std::vector<int> FindPath(
@@ -36,57 +94,6 @@ inline std::vector<int> FindPath(
     //as it would have been way easier to simply transform the vector to id and pass it to search
     std::vector<int> Path = pathfinder.search(startPoint[1]*mapSizeX+startPoint[0], endPoint[1]*mapSizeX+endPoint[0], mapSize);
 
-
-    // // Visualization for debug
-    // std::cout << "This is the path:" << std::endl;
-    // for (unsigned long idx=0; idx < Path.size(); idx=idx+2)
-    // {
-    //     std::cout << Path[idx] << ", " << Path[idx+1] << std::endl;
-    // }
-
-    // std::vector<int> path = Path;
-
-    // if(path.size())
-    // {
-    //     path.pop_back();
-    //     path.pop_back();
-    //     path.erase(path.begin());
-    //     path.erase(path.begin());
-    // }
-
-    // //nodes
-    // int x = 0;
-    // for(unsigned long idx=0; idx < path.size(); idx=idx+2)
-    //     Map[path[idx+1] * mapSizeX + path[idx]] = 1 + x++;
-
-    // //draw map
-    // for(int y = 0; y < mapSizeY; y++)
-    // {
-    //     for(int x = 0; x < mapSizeX; x++)
-    //     {
-    //         if ((startPoint[0] == x) && (startPoint[1] == y))
-    //             std::cout << "S";
-    //         else if ((endPoint[0] == x) && (endPoint[1] == y))
-    //             std::cout << "E";
-    //         else
-    //         {
-    //             if ((Map[y * mapSizeX + x] != 255) && (Map[y * mapSizeX + x] != 0))
-    //                 std::cout << Map[y * mapSizeX + x];
-    //             else if (Map[y * mapSizeX + x] == 255)
-    //                 std::cout << "#";
-    //             else
-    //                 std::cout << " ";
-    //         }
-    //     }
-
-    //     std::cout << std::endl;
-    // }
-
-    // std::cout << "#  = walls" << std::endl;
-    // std::cout << "S  = start" << std::endl;
-    // std::cout << "E  = end" << std::endl;
-    // std::cout << "number = path nodes" << std::endl;
-
     return Path;
 }
 
@@ -95,5 +102,5 @@ inline PYBIND11_MODULE(LazyThetaStarPython, module) {
     module.doc() = "Python wrapper of Lazy Theta Star c++ implementation";
 
     module.def("FindPath", &FindPath, "Find a collision-free path");
-    // module.def("FindPathAll", &FindPathAll, "Find all the collision-free paths");
+    module.def("FindPathMany", &FindPathMany, "Find all the collision-free paths");
 }
