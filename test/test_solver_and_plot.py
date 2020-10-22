@@ -65,8 +65,14 @@ if __name__ == "__main__":
     for i in range(0,len(path_many),1):
         print("This is a path.")
         print("Total distance: " + str(distances_many[i]))
+        distance_check = 0.0
         for j in range(0,len(path_many[i]),2):
             str_print = str(path_many[i][j]) + ', ' + str(path_many[i][j+1])
             print(str_print)
+
+            if j > 0:
+                distance_check = distance_check + sqrt((path_many[i][j]-path_many[i][j-2])**2 + (path_many[i][j+1]-path_many[i][j-1])**2)
+        print("Distance computed afterwards: " + str(distance_check))
+
     # visualization (uncomment next line if you want to visualize a single path)
     Simulator.plot_many_path(path_many, agent_position, targets_position)
