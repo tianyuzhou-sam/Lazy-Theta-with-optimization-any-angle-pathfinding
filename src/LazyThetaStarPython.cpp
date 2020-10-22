@@ -22,7 +22,8 @@ inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMan
     std::vector<int> start_goal_pair = get_combination(targets_position.size()/2 + 1, 2);
     std::vector<std::vector<int>> path_many;
     std::vector<float> distances_many;
-    // path_many.reserve(start_goal_pair.size());
+    int start[2];
+    int goal[2];
 
     //Instantiating our path adaptor
     //passing the map size, and the map
@@ -35,9 +36,6 @@ inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMan
     {
         int start_idx = start_goal_pair[idx];
         int goal_idx = start_goal_pair[idx+1];
-
-        int start[2];
-        int goal[2];
 
         if (start_idx != 0)
         {
