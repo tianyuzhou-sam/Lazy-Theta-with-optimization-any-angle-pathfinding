@@ -4,11 +4,12 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <tuple>
 #include "tileadaptor.hpp"
 #include "utility.hpp"
 
 
-inline std::vector<int> find_path(
+inline std::tuple<std::vector<int>, float> find_path(
     int *start,
     int *end,
     const std::vector<int> &Map,
@@ -30,9 +31,9 @@ inline std::vector<int> find_path(
     //doing the search
     //merly to show the point of how it work
     //as it would have been way easier to simply transform the vector to id and pass it to search
-    std::vector<int> Path = pathfinder.search(start[1]*mapSizeX+start[0], end[1]*mapSizeX+end[0], adaptor.mMapSize);
+    // std::tuple<std::vector<int>, float> result_tuple = pathfinder.search(start[1]*mapSizeX+start[0], end[1]*mapSizeX+end[0], adaptor.mMapSize);
 
-    return Path;
+    return pathfinder.search(start[1]*mapSizeX+start[0], end[1]*mapSizeX+end[0], adaptor.mMapSize);
 }
 
 #endif

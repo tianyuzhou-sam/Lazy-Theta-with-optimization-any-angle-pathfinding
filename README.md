@@ -43,10 +43,10 @@ $ cd <MAIN_DIRECTORY>
 $ python3 test/test_LazyThetaStarPython.py
 ```
 
-Or `test/solve_plot.py`.
+Or `test/test_solver_and_plot.py`.
 ```
 $ cd <MAIN_DIRECTORY>
-$ python3 test/solve_plot.py
+$ python3 test/test_solver_and_plot.py
 ```
 
 Example
@@ -54,7 +54,7 @@ Example
 
 **Python**
 
-To call the Lazy Theta Star solver in Python, a simple example is shown below. More details are in `test/solve_plot.py` and `test/test_LazyThetaStarPython.py`.
+To call the Lazy Theta Star solver in Python, a simple example is shown below. More details are in `test/test_solver_and_plot.py` and `test/test_LazyThetaStarPython.py`.
 
 ```python
 import LazyThetaStarPython
@@ -64,10 +64,10 @@ map_height = 20
 start = [5, 8] # coordinates for start
 goal = [35, 34] # coordinates for goal
 # solve it
-path_single = LazyThetaStarPython.FindPath(start, goal, world_map, map_width, map_height)
+path_single, distance_single = LazyThetaStarPython.FindPath(start, goal, world_map, map_width, map_height)
 ```
 
-Run `test/solve_plot.py`, the result is shown below. Time used is 0.55 ms.
+Run `test/test_solver_and_plot.py`, the result is shown below. Time used is 0.55 ms.
 ![single path](doc/path_single.png?raw=true "Single Path")
 
 
@@ -83,7 +83,8 @@ int start[2] = {1, 1};
 int end[2] = {68, 18};
 // Map_1D is a std::vector<int>, 0 means no obstacles, 255 means blocked by obstacles
 // solve it
-std::vector<int> path = find_path(start, end, Map_1D, mapSizeX, mapSizeY);
+// this is a tuple: std::tuple<std::vector<int>, float>
+auto [path, distance] = find_path(start, end, Map_1D, mapSizeX, mapSizeY);
 ```
 
 

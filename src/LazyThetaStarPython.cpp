@@ -12,7 +12,7 @@
 #include "get_combination.hpp"
 
 
-inline std::vector<std::vector<int>> FindPathMany(
+inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMany(
     std::vector<int> agent_position,
     std::vector<int> targets_position,
     const std::vector<int> &Map,
@@ -21,6 +21,7 @@ inline std::vector<std::vector<int>> FindPathMany(
 {
     std::vector<int> start_goal_pair = get_combination(targets_position.size()/2 + 1, 2);
     std::vector<std::vector<int>> path_many;
+    std::vector<float> distances_many;
     // path_many.reserve(start_goal_pair.size());
 
     //Instantiating our path adaptor
@@ -62,8 +63,9 @@ inline std::vector<std::vector<int>> FindPathMany(
         }
 
         //doing the search
-        std::vector<int> path_single = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
-        path_many.push_back(path_single);
+        auto [Path, Distance] = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
+        path_many.push_back(Path);
+        distances_many.push_back(Distance);
 
         // Regenerate the neighbors for next run
         if (idx < start_goal_pair.size()-1)
@@ -73,11 +75,11 @@ inline std::vector<std::vector<int>> FindPathMany(
 
     }
 
-    return path_many;
+    return {path_many, distances_many};
 }
 
 
-inline std::vector<int> FindPath(
+inline std::tuple<std::vector<int>, float> FindPath(
     std::vector<int> &startPoint,
     std::vector<int> &endPoint,
     std::vector<int> &Map,
@@ -99,9 +101,9 @@ inline std::vector<int> FindPath(
     //doing the search
     //merly to show the point of how it work
     //as it would have been way easier to simply transform the vector to id and pass it to search
-    std::vector<int> Path = pathfinder.search(startPoint[1]*mapSizeX+startPoint[0], endPoint[1]*mapSizeX+endPoint[0], mapSize);
+    // auto [Path, Distance] = pathfinder.search(startPoint[1]*mapSizeX+startPoint[0], endPoint[1]*mapSizeX+endPoint[0], mapSize);
 
-    return Path;
+    return pathfinder.search(startPoint[1]*mapSizeX+startPoint[0], endPoint[1]*mapSizeX+endPoint[0], mapSize);
 }
 
 

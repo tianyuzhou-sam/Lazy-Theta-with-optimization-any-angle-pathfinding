@@ -1,10 +1,12 @@
 #pragma once
 
+#include <cmath>
 #include <vector>
 #include <numeric>
 #include <algorithm>
 #include <functional>
 #include <array>
+#include <tuple>
 #include "utility.hpp"
 
 
@@ -80,7 +82,7 @@ public:
     //     return finalPath;
     // }
 
-    std::vector<int> search(const NodeId &startId, const NodeId &endId, const Vectori &mMapSize)
+    std::tuple<std::vector<int>, float> search(const NodeId &startId, const NodeId &endId, const Vectori &mMapSize)
     {
         openList.clear();
 
@@ -147,22 +149,34 @@ public:
         }
 
         std::vector<int> path;
+        int count = 0;
+        float distance = 0.0;
 
         if(nodes[endId].g < INFINITE_COST)
         {
             NodeId curr = endId;
             while(curr != startId)
             {
+                // y, row index
                 path.push_back(curr / mMapSize.x);
+                // x, column index
                 path.push_back(curr % mMapSize.x);
                 curr = nodes[curr].parent;
+
+                if (count >= 1)
+                {
+                    distance = distance + sqrt((path[2*count]-path[2*count-2])*(path[2*count]-path[2*count-2])+(path[2*count+1]-path[2*count-1])*(path[2*count+1]-path[2*count-1]));
+                }
+
+                count++;
             }
             path.push_back(curr / mMapSize.x);
             path.push_back(curr % mMapSize.x);
+            distance = distance + sqrt((path[2*count]-path[2*count-2])*(path[2*count]-path[2*count-2])+(path[2*count+1]-path[2*count-1])*(path[2*count+1]-path[2*count-1]));
             std::reverse(path.begin(), path.end());
         }
 
-        return path;
+        return {path, distance};
     }
 
     inline void generateNodes()

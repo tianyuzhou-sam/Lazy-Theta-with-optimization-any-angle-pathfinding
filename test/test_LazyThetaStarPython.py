@@ -50,10 +50,11 @@ if __name__ == "__main__":
     t0 = time.time()
 
     # solve it
-    path = LazyThetaStarPython.FindPath(start, end, world_map, map_width, map_height)
+    path, distance = LazyThetaStarPython.FindPath(start, end, world_map, map_width, map_height)
 
     t1 = time.time()
     print("This is the path. Time used [sec]:" + str(t1 - t0))
+    print("Total distance: " + str(distance))
     for idx in range(0,len(path),2):
         str_print = str(path[idx]) + ', ' + str(path[idx+1])
         print(str_print)
@@ -66,12 +67,13 @@ if __name__ == "__main__":
     t0 = time.time()
 
     # solve it
-    path_many = LazyThetaStarPython.FindPathMany(agent_position, targets_position, world_map, map_width, map_height)
+    path_many, distances_many = LazyThetaStarPython.FindPathMany(agent_position, targets_position, world_map, map_width, map_height)
     
     t1 = time.time()
     print("These are all the paths. Time used [sec]:" + str(t1 - t0))
     for i in range(0,len(path_many),1):
         print("This is a path.")
+        print("Total distance: " + str(distances_many[i]))
         for j in range(0,len(path_many[i]),2):
             str_print = str(path_many[i][j]) + ', ' + str(path_many[i][j+1])
             print(str_print)

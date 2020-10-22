@@ -4,12 +4,13 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <tuple>
 #include "tileadaptor.hpp"
 #include "utility.hpp"
 #include "get_combination.hpp"
 
 
-inline std::vector<std::vector<int>> find_path_many(
+inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> find_path_many(
     int *agent_position,
     std::vector<int> targets_position,
     const std::vector<int> &Map,
@@ -18,6 +19,7 @@ inline std::vector<std::vector<int>> find_path_many(
 {
     std::vector<int> start_goal_pair = get_combination(targets_position.size()/2 + 1, 2);
     std::vector<std::vector<int>> path_many;
+    std::vector<float> distances_many;
     // path_many.reserve(start_goal_pair.size());
 
     //Instantiating our path adaptor
@@ -59,8 +61,9 @@ inline std::vector<std::vector<int>> find_path_many(
         }
 
         //doing the search
-        std::vector<int> path_single = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
-        path_many.push_back(path_single);
+        auto [Path, Distance] = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
+        path_many.push_back(Path);
+        distances_many.push_back(Distance);
 
         // Regenerate the neighbors for next run
         if (idx < start_goal_pair.size()-1)
@@ -69,7 +72,7 @@ inline std::vector<std::vector<int>> find_path_many(
         }
     }
 
-    return path_many;
+    return {path_many, distances_many};
 }
 
 #endif

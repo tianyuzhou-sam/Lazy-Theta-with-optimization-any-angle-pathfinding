@@ -66,7 +66,7 @@ int main()
 
     
     // solve it
-    std::vector<std::vector<int>> path_many = find_path_many(agent_position, targets_position, Map_1D, mapSizeX, mapSizeY);
+    auto [path_many, distances_many] = find_path_many(agent_position, targets_position, Map_1D, mapSizeX, mapSizeY);
 
 
     auto stop = std::chrono::high_resolution_clock::now();
@@ -76,6 +76,7 @@ int main()
     for(long unsigned int i=0; i<path_many.size(); i++)
     {
         std::cout << "This is a path, idx = " << i << std::endl;
+        std::cout << "Total distance is: " << distances_many[i] << std::endl;
         if (path_many[i].size() > 0)
         {
             for (long unsigned int j=0; j<path_many[i].size(); j = j + 2)

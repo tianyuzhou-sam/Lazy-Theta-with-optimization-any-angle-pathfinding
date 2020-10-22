@@ -2,6 +2,7 @@
 #include <vector>
 #include <array>
 #include <chrono>
+// #include <tuple>
 #include "tileadaptor.hpp"
 #include "find_path.hpp"
 
@@ -63,7 +64,7 @@ int main()
     auto start_time = std::chrono::high_resolution_clock::now();
 
     // solve it
-    std::vector<int> path = find_path(start, end, Map_1D, mapSizeX, mapSizeY);
+    auto [path, distance] = find_path(start, end, Map_1D, mapSizeX, mapSizeY);
 
 
     auto stop_time = std::chrono::high_resolution_clock::now();
@@ -75,6 +76,8 @@ int main()
     {
         std::cout << path[idx] << ", " << path[idx+1] << std::endl;
     }
+
+    std::cout << "Total distance is: " << distance << std::endl;
 
 
     // The following is the visualization
