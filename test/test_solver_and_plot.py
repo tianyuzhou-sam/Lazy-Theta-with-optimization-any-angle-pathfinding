@@ -6,6 +6,7 @@ sys.path.append(os.getcwd()+'/src')
 import LazyThetaStarPython
 import numpy as np
 import time
+from math import sqrt
 import matplotlib.pyplot as plt
 
 import Simulator as helper
@@ -40,9 +41,15 @@ if __name__ == "__main__":
     print("Time used for a single path is [sec]: " + str(t1-t0))
     print("This is the path.")
     print("Total distance: " + str(distance_single))
+    distance_check = 0.0
     for idx in range(0,len(path_single),2):
         str_print = str(path_single[idx]) + ', ' + str(path_single[idx+1])
         print(str_print)
+
+        if idx > 0:
+            distance_check = distance_check + sqrt((path_single[idx]-path_single[idx-2])**2 + (path_single[idx+1]-path_single[idx-1])**2)
+
+    print("Distance computed afterwards: " + str(distance_check))
     # visualization (uncomment next line if you want to visualize a single path)
     Simulator.plot_single_path(path_single)    
 

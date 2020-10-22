@@ -82,7 +82,7 @@ class Simulator(object):
             # plot retangle obstacles
             for idx in range(len(self.obs_left_top_corner_list)):
                 # Create a Rectangle patch
-                print(self.obs_left_top_corner_list[idx])
+                # print(self.obs_left_top_corner_list[idx])
                 rect = patches.Rectangle(self.obs_left_top_corner_list[idx], self.size_obs_width, self.size_obs_height, linewidth=1, edgecolor='k', facecolor='k')
                 # Add the patch to the Axes
                 ax_map.add_patch(rect)
@@ -111,7 +111,7 @@ class Simulator(object):
         # plot retangle obstacles
         for idx in range(len(self.obs_left_top_corner_list)):
             # Create a Rectangle patch
-            print(self.obs_left_top_corner_list[idx])
+            # print(self.obs_left_top_corner_list[idx])
             rect = patches.Rectangle(self.obs_left_top_corner_list[idx], self.size_obs_width, self.size_obs_height, linewidth=1, edgecolor='k', facecolor='k')
             # Add the patch to the Axes
             ax_map.add_patch(rect)
