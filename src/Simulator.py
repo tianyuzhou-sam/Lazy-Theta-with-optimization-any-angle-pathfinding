@@ -121,7 +121,7 @@ class Simulator(object):
             ax_map.scatter(targets_position[2*idx_target], targets_position[2*idx_target+1], label="goal")
 
         for idx_path in range(0, len(path_many)):
-            ax_map.plot(path_many[idx_path][0::2], path_many[idx_path][1::2], label="path")
+            ax_map.plot(path_many[idx_path][0::2], path_many[idx_path][1::2])
 
         ax_map.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         ax_map.set_xlabel("x")
@@ -130,3 +130,21 @@ class Simulator(object):
         ax_map.set_xlim([0, self.map_width])
         ax_map.set_ylim([0, self.map_height])
         plt.show()
+
+
+    def generate_start_and_goals(self, num_targets: int):
+        start = [randint(0,5), randint(0,5)]
+        while self.map_array[start[1]][start[0]] != self.value_non_obs:
+            start = [randint(0,5), randint(0,5)]
+            print("Start is inside an obstacle. Re-generate a new start.")
+        
+        targets = []
+        for idx in range(0,num_targets):
+            goal = [randint(20,self.map_width-1), randint(20,self.map_width-1)]
+            while self.map_array[goal[1]][goal[0]] != self.value_non_obs:
+                goal = [randint(20,self.map_width-1), randint(20,self.map_width-1)]
+                print("Target is inside an obstacle. Re-generate a new target.")
+            targets.append(goal[0])
+            targets.append(goal[1])
+
+        return start, targets

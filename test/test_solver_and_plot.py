@@ -32,11 +32,11 @@ if __name__ == "__main__":
 
 
     # This is for a single start and goal
-    start = [5, 8]
-    end = [35, 34]
+    num_targets = 1
+    start, targets = Simulator.generate_start_and_goals(num_targets)
     # solve it
     t0 = time.time()
-    path_single, distance_single = LazyThetaStarPython.FindPath(start, end, world_map, Simulator.map_width, Simulator.map_height)
+    path_single, distance_single = LazyThetaStarPython.FindPath(start, targets, world_map, Simulator.map_width, Simulator.map_height)
     t1 = time.time()
     print("Time used for a single path is [sec]: " + str(t1-t0))
     print("This is the path.")
@@ -51,12 +51,12 @@ if __name__ == "__main__":
 
     print("Distance computed afterwards: " + str(distance_check))
     # visualization (uncomment next line if you want to visualize a single path)
-    Simulator.plot_single_path(path_single)    
+    Simulator.plot_single_path(path_single)
 
 
     # This is for an agent and a set of targets
-    agent_position = [0, 0]
-    targets_position = [35,35, 10,38, 30,6, 25,29]
+    num_targets = 4
+    agent_position, targets_position = Simulator.generate_start_and_goals(num_targets)
     t0 = time.time()
     # solve it
     path_many, distances_many = LazyThetaStarPython.FindPathMany(agent_position, targets_position, world_map, Simulator.map_width, Simulator.map_height)
