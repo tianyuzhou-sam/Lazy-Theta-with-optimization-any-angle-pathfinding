@@ -136,14 +136,14 @@ class Simulator(object):
         start = [randint(0,5), randint(0,5)]
         while self.map_array[start[1]][start[0]] != self.value_non_obs:
             start = [randint(0,5), randint(0,5)]
-            print("Start is inside an obstacle. Re-generate a new start.")
+            # print("Start is inside an obstacle. Re-generate a new start.")
         
         targets = []
         for idx in range(0,num_targets):
             goal = [randint(20,self.map_width-1), randint(20,self.map_width-1)]
             while self.map_array[goal[1]][goal[0]] != self.value_non_obs:
                 goal = [randint(20,self.map_width-1), randint(20,self.map_width-1)]
-                print("Target is inside an obstacle. Re-generate a new target.")
+                # print("Target is inside an obstacle. Re-generate a new target.")
             targets.append(goal[0])
             targets.append(goal[1])
 
