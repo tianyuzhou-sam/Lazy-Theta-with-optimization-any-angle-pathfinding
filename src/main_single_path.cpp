@@ -2,7 +2,6 @@
 #include <vector>
 #include <array>
 #include <chrono>
-// #include <tuple>
 #include "tileadaptor.hpp"
 #include "find_path.hpp"
 
