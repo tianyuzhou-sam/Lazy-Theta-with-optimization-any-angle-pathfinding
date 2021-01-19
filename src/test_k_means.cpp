@@ -19,10 +19,10 @@ int main()
     DataFrame data;
     data.push_back(pt1);
     data.push_back(pt2);
-    data.push_back(pt3);
-    data.push_back(pt4);
     data.push_back(pt5);
     data.push_back(pt6);
+    data.push_back(pt3);
+    data.push_back(pt4);
     data.push_back(pt7);
     data.push_back(pt8);
 
