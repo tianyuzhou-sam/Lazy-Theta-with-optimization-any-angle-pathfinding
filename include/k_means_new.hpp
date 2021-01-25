@@ -30,7 +30,7 @@ inline double squared_l2_distance(Point first, Point second) {
 }
 
 
-std::tuple<DataFrame, std::vector<size_t>> k_means_new(const DataFrame& data, size_t k, size_t number_of_iterations) {
+std::tuple<DataFrame, std::vector<size_t>, std::vector<std::vector<size_t>>> k_means_new(const DataFrame& data, const size_t& k, const size_t& number_of_iterations) {
     static std::random_device seed;
     static std::mt19937 random_number_generator(seed());
     std::uniform_int_distribution<size_t> indices(0, data.size() - 1);
@@ -77,7 +77,16 @@ std::tuple<DataFrame, std::vector<size_t>> k_means_new(const DataFrame& data, si
         }
     }
 
-    return {means, assignments};
+
+    // create a 2D vector which contains points in different clusters
+    std::vector<size_t> points_index_1d;
+    std::vector<std::vector<size_t>> points_index_2d(k, points_index_1d);
+    for (size_t point = 0; point < data.size(); ++point) {
+        points_index_2d[assignments[point]].push_back(point);
+    }
+
+
+    return {means, assignments, points_index_2d};
 }
 
 
