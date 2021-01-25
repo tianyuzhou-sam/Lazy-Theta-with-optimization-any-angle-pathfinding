@@ -1,3 +1,6 @@
+// Choosing K items from total N items, and return the index
+
+
 #ifndef GET_COMBINATION_H
 #define GET_COMBINATION_H
 
