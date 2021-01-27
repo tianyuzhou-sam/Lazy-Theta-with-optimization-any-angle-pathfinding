@@ -12,7 +12,7 @@
 
 inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> find_path_many(
     int *agent_position,
-    std::vector<int> targets_position,
+    std::vector<int> &targets_position,
     const std::vector<int> &Map,
     const int &mapSizeX,
     const int &mapSizeY)
