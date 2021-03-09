@@ -3,8 +3,9 @@ This is a customized version of Lazy-Theta-with-optimization-any-angle-pathfindi
 
 
 This repo has been tested with:
+* GCC 10.2.0, CMake 3.16.3, Ubuntu 20.04.2 LTS
 * GCC 9.3.0, CMake 3.16.3, Ubuntu 20.04.1 LTS
-* Clang 12.0.0.0, CMake 3.18.3, macOS 10.15.7
+* Clang 12.0.0, CMake 3.18.3, macOS 10.15.7
 * Clang 12.0.0, CMake 3.19.3, macOS 11.1
 
 Dependencies
@@ -18,7 +19,7 @@ For Python:
 Build
 =====
 ```
-$ apt-get install pybind11 # For macOS: brew install pybind11
+$ sudo apt install python3-pybind11 # For macOS: brew install pybind11
 $ pip3 install numpy matplotlib
 $ git clone https://github.com/zehuilu/Lazy-Theta-with-optimization-any-angle-pathfinding.git
 $ cd <MAIN_DIRECTORY>
