@@ -6,11 +6,13 @@
 #include <math.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-
 #include "tileadaptor.hpp"
 #include "utility.hpp"
 #include "get_combination.hpp"
 
+#define likely(x)      __builtin_expect(!!(x), 1)
+#define unlikely(x)    __builtin_expect(!!(x), 0)
+static constexpr float WEIGHT_PATH = 1E8;
 
 inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMany(
     std::vector<int> agent_position,
@@ -30,7 +32,8 @@ inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMan
     Vectori mapSize(mapSizeX, mapSizeY);
     TileAdaptor adaptor(mapSize, Map);
     //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
-    Pathfinder pathfinder(adaptor, 100.f /*weight*/);
+    // Pathfinder pathfinder(adaptor, 100.f /*weight*/);
+    Pathfinder pathfinder(adaptor, WEIGHT_PATH);
 
     for (unsigned long idx = 0; idx < start_goal_pair.size(); idx = idx + 2)
     {
@@ -66,13 +69,11 @@ inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMan
         distances_many.push_back(Distance);
 
         // Regenerate the neighbors for next run
-        if (idx < start_goal_pair.size()-1)
+        if (likely(idx < start_goal_pair.size()-1))
         {
             pathfinder.generateNodes();
         }
-
     }
-
     return {path_many, distances_many};
 }
 

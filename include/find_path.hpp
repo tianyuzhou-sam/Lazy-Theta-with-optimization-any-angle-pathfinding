@@ -8,6 +8,7 @@
 #include "tileadaptor.hpp"
 #include "utility.hpp"
 
+static constexpr float WEIGHT_PATH = 1E8;
 
 inline std::tuple<std::vector<int>, float> find_path(
     int *start,
@@ -23,7 +24,7 @@ inline std::tuple<std::vector<int>, float> find_path(
     TileAdaptor adaptor(mapSize, Map);
     
     //This is a bit of an exageration here for the weight, but it did make my performance test go from 8s to 2s
-    Pathfinder pathfinder(adaptor, 100.f /*weight*/);
+    Pathfinder pathfinder(adaptor, WEIGHT_PATH);
 
     //The map was edited so we need to regenerate teh neighbors
     // pathfinder.generateNodes();
@@ -35,5 +36,6 @@ inline std::tuple<std::vector<int>, float> find_path(
 
     return pathfinder.search(start[1]*mapSizeX+start[0], end[1]*mapSizeX+end[0], adaptor.mMapSize);
 }
+
 
 #endif

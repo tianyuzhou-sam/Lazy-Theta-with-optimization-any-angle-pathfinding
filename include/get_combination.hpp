@@ -1,9 +1,5 @@
-// Choosing K items from total N items, and return the index
-
-
 #ifndef GET_COMBINATION_H
 #define GET_COMBINATION_H
-
 
 #include <algorithm>
 #include <iostream>
@@ -11,6 +7,7 @@
 #include <vector>
 
 
+// Choosing K items from total N items, and return the index
 inline std::vector<int> get_combination(const int &N, const int &K)
 {
     std::vector<int> result;

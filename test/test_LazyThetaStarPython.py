@@ -7,11 +7,9 @@ import time
 
 
 if __name__ == "__main__":
-
     # define the world map
     map_width = 20
     map_height = 20
-
     world_map = [
     # 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,   # 00
@@ -43,15 +41,12 @@ if __name__ == "__main__":
         else:
             world_map[idx] = 0
 
-
     # This is for a single start and goal
     start = [0, 0]
     end = [15, 10]
     t0 = time.time()
-
     # solve it
     path, distance = LazyThetaStarPython.FindPath(start, end, world_map, map_width, map_height)
-
     t1 = time.time()
     print("This is the path. Time used [sec]:" + str(t1 - t0))
     print("Total distance: " + str(distance))
@@ -59,16 +54,12 @@ if __name__ == "__main__":
         str_print = str(path[idx]) + ', ' + str(path[idx+1])
         print(str_print)
 
-
-
     # This is for an agent and a set of targets
     agent_position = [0, 0]
     targets_position = [15,10, 19,19, 13,10]
     t0 = time.time()
-
     # solve it
     path_many, distances_many = LazyThetaStarPython.FindPathMany(agent_position, targets_position, world_map, map_width, map_height)
-    
     t1 = time.time()
     print("These are all the paths. Time used [sec]:" + str(t1 - t0))
     for i in range(0,len(path_many),1):
