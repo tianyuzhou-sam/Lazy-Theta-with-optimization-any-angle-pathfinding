@@ -11,12 +11,12 @@
 
 #define likely(x)      __builtin_expect(!!(x), 1)
 #define unlikely(x)    __builtin_expect(!!(x), 0)
-static constexpr float WEIGHT_PATH = 1E8;
+static constexpr float WEIGHT_PATH = 1E2;
 
 
 inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> find_path_many(
-    int *agent_position,
-    std::vector<int> &targets_position,
+    const int *agent_position,
+    const std::vector<int> &targets_position,
     const std::vector<int> &Map,
     const int &mapSizeX,
     const int &mapSizeY)

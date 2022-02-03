@@ -12,11 +12,11 @@
 
 #define likely(x)      __builtin_expect(!!(x), 1)
 #define unlikely(x)    __builtin_expect(!!(x), 0)
-static constexpr float WEIGHT_PATH = 1E8;
+static constexpr float WEIGHT_PATH = 1E2;
 
 inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMany(
-    std::vector<int> agent_position,
-    std::vector<int> targets_position,
+    const std::vector<int> agent_position,
+    const std::vector<int> targets_position,
     const std::vector<int> &Map,
     const int &mapSizeX,
     const int &mapSizeY)
@@ -64,9 +64,9 @@ inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMan
         }
 
         //doing the search
-        auto [Path, Distance] = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
-        path_many.push_back(Path);
-        distances_many.push_back(Distance);
+        auto [path, distance] = pathfinder.search(start[1]*mapSizeX+start[0], goal[1]*mapSizeX+goal[0], mapSize);
+        path_many.push_back(path);
+        distances_many.push_back(distance);
 
         // Regenerate the neighbors for next run
         if (likely(idx < start_goal_pair.size()-1))
@@ -79,11 +79,11 @@ inline std::tuple<std::vector<std::vector<int>>, std::vector<float>> FindPathMan
 
 
 inline std::tuple<std::vector<int>, float> FindPath(
-    std::vector<int> &startPoint,
-    std::vector<int> &endPoint,
-    std::vector<int> &Map,
-    int &mapSizeX,
-    int &mapSizeY)
+    const std::vector<int> &startPoint,
+    const std::vector<int> &endPoint,
+    const std::vector<int> &Map,
+    const int &mapSizeX,
+    const int &mapSizeY)
 {
     //Instantiating our path adaptor
     //passing the map size, and the map

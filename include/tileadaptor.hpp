@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TILEADAPTOR_HPP
+#define TILEADAPTOR_HPP
 
 #include <vector>
 #include <array>
@@ -169,3 +170,5 @@ private:
     }
 
 };
+
+#endif

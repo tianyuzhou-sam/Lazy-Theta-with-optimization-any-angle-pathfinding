@@ -8,11 +8,11 @@
 #include "tileadaptor.hpp"
 #include "utility.hpp"
 
-static constexpr float WEIGHT_PATH = 1E8;
+static constexpr float WEIGHT_PATH = 1E2;
 
 inline std::tuple<std::vector<int>, float> find_path(
-    int *start,
-    int *end,
+    const int *start,
+    const int *end,
     const std::vector<int> &Map,
     const int &mapSizeX,
     const int &mapSizeY)

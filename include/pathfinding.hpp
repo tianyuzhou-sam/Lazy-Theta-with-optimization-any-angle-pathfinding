@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PATHFINDING_HPP
+#define PATHFINDING_HPP
 
 #include <cmath>
 #include <vector>
@@ -272,3 +273,4 @@ typename std::vector<T>::iterator
 }
 };
 
+#endif

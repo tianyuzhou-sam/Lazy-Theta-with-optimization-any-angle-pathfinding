@@ -4,7 +4,6 @@ import sys
 sys.path.append(os.getcwd()+'/build')
 sys.path.append(os.getcwd()+'/src')
 import LazyThetaStarPython
-import numpy as np
 import time
 from math import sqrt
 import matplotlib.pyplot as plt

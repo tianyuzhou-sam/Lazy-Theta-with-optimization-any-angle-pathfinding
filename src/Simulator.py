@@ -5,9 +5,7 @@ sys.path.append(os.getcwd()+'/src')
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 from random import randint
-import copy
 
 
 class Simulator(object):
