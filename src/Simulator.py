@@ -5,7 +5,9 @@ sys.path.append(os.getcwd()+'/src')
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from random import randint
+import time
 
 
 class Simulator(object):
@@ -122,3 +124,124 @@ class Simulator(object):
                 # print("Target is inside an obstacle. Re-generate a new target.")
             targets.extend(goal)
         return start, targets
+
+    def init_path_one_by_one_node_many(self):
+        # enable interactive mode
+        plt.ion()
+        plt.show()
+        self.fig_map_rt, self.ax_map_rt = plt.subplots(1, 1)
+        # legends
+        self.fig_settings()
+        self.cmap = matplotlib.colors.ListedColormap(['white','black'])
+        self.ax_map_rt.pcolor(self.map_array, cmap=self.cmap, edgecolors='k')
+        plt.pause(5)
+
+    def plot_path_one_by_one_node_many(self, path, compTimeMS: float, lastFlag=False):
+        """
+        Inputs:
+            path: 1d list, a list for the trajectory, e.g. [x[0], y[0], x[1], y[1], ...]
+            compTimeMS: float, computation time in ms
+            lastFlag: bool, True if this is last case
+        """
+        # looping
+        for idx_node in range(int(len(path)/2)):
+            self.ax_map_rt.clear()
+            path_now = path[0:2*idx_node+2]
+
+            self.ax_map_rt.pcolor(self.map_array, cmap=self.cmap, edgecolors='k')
+            # plot the computation time
+            timeStr = "Computation Time [ms]: " + str(round(compTimeMS, 2))
+            plt.text(0.25, 0.9, timeStr, fontsize=14, transform=plt.gcf().transFigure)
+
+            if idx_node >= 1:
+                self.ax_map_rt.scatter(path_now[0]+0.5, path_now[1]+0.5, color="blue")
+                self.ax_map_rt.scatter(path[-2]+0.5, path[-1]+0.5, color="green")
+                self.ax_map_rt.plot(list(map(lambda x:x+0.5, path_now[0::2])),
+                                    list(map(lambda x:x+0.5, path_now[1::2])),
+                                    label="path", color="blue")
+            # legends
+            self.fig_settings()
+            plt.draw()
+            plt.pause(0.2)
+
+        self.ax_map_rt.clear()
+        self.ax_map_rt.pcolor(self.map_array, cmap=self.cmap, edgecolors='k')
+        self.ax_map_rt.scatter(path[0]+0.5, path[1]+0.5, label="start", color="blue")
+        self.ax_map_rt.scatter(path[-2]+0.5, path[-1]+0.5, label="goal", color="green")
+        self.ax_map_rt.plot(list(map(lambda x:x+0.5, path[0::2])),
+                            list(map(lambda x:x+0.5, path[1::2])),
+                            label="path", color="blue")
+        # plot the computation time
+        timeStr = "Computation Time [ms]: " + str(round(compTimeMS, 2))
+        plt.text(0.25, 0.9, timeStr, fontsize=14, transform=plt.gcf().transFigure)
+        # legends
+        self.fig_settings()
+        plt.draw()
+        if lastFlag:
+            plt.pause(3)
+        else:
+            plt.pause(0.2)
+
+    def plot_path_one_by_one_node(self, path):
+        """
+        Inputs:
+            path: 1d list, a list for the trajectory, e.g. [x[0], y[0], x[1], y[1], ...]
+        """
+        # enable interactive mode
+        plt.ion()
+        plt.show()
+        self.fig_map_rt, self.ax_map_rt = plt.subplots(1, 1)
+
+        # legends
+        self.fig_settings()
+        cmap = matplotlib.colors.ListedColormap(['white','black'])
+        self.ax_map_rt.pcolor(self.map_array, cmap=self.cmap, edgecolors='k')
+        plt.pause(2)
+
+        # looping
+        for idx_node in range(int(len(path)/2)):
+            self.ax_map_rt.clear()
+            path_now = path[0:2*idx_node+2]
+
+            self.ax_map_rt.pcolor(self.map_array, cmap=cmap, edgecolors='k')
+
+            if idx_node >= 1:
+                self.ax_map_rt.scatter(path_now[0]+0.5, path_now[1]+0.5, color="blue")
+                self.ax_map_rt.scatter(path[-2]+0.5, path[-1]+0.5, color="green")
+                self.ax_map_rt.plot(list(map(lambda x:x+0.5, path_now[0::2])),
+                                    list(map(lambda x:x+0.5, path_now[1::2])),
+                                    label="path", color="blue")
+            # legends
+            self.fig_settings()
+            plt.draw()
+            plt.pause(1)
+
+        self.ax_map_rt.clear()
+        self.ax_map_rt.pcolor(self.map_array, cmap=cmap, edgecolors='k')
+        self.ax_map_rt.scatter(path[0]+0.5, path[1]+0.5, label="start", color="blue")
+        self.ax_map_rt.scatter(path[-2]+0.5, path[-1]+0.5, label="goal", color="green")
+        self.ax_map_rt.plot(list(map(lambda x:x+0.5, path[0::2])),
+                            list(map(lambda x:x+0.5, path[1::2])),
+                            label="path", color="blue")
+        # legends
+        self.fig_settings()
+        plt.draw()
+        plt.pause(1)
+
+    def fig_settings(self):
+        # set legends
+        colors = ["blue", "green"]
+        marker_list = ["o", "o"]
+        labels = ["start", "goal"]
+        f = lambda m,c: plt.plot([],[],marker=m, color=c, ls="none")[0]
+        handles = [f(marker_list[i], colors[i]) for i in range(len(labels))]
+        # add legend about path
+        handles.append(plt.plot([],[], linestyle="solid", color="blue", linewidth=2)[0])
+        handles.append(patches.Patch(color="black", alpha=1))
+        labels.extend(["Path", "Obstacles"])
+        self.ax_map_rt.legend(handles, labels, bbox_to_anchor=(1, 1), loc="upper left", framealpha=1)
+        self.ax_map_rt.set_xlabel("x")
+        self.ax_map_rt.set_ylabel("y")
+        self.ax_map_rt.set_aspect('equal')
+        self.ax_map_rt.set_xlim([0, self.map_width])
+        self.ax_map_rt.set_ylim([0, self.map_height])

@@ -25,7 +25,7 @@ $ git clone https://github.com/zehuilu/Lazy-Theta-with-optimization-any-angle-pa
 $ cd <MAIN_DIRECTORY>
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake .. -DPYTHON_EXECUTABLE=$(which python3)
 $ make
 ```
 
@@ -71,6 +71,35 @@ path_single, distance_single = LazyThetaStarPython.FindPath(start, goal, world_m
 
 Run `test/test_solver_and_plot.py`, the result is shown below. Time used is 0.55 ms.
 ![single path](doc/path_single.png?raw=true "Single Path")
+
+
+For a nice animation, run
+```
+cd <MAIN_DIRECTORY>
+python3 test/test_solve_plot_one_by_one.py
+```
+
+```
+cd <MAIN_DIRECTORY>
+python3 test/test_solve_plot_one_by_one_many.py
+```
+
+
+**A frequent issue after compilation**
+
+If after compilation, you found this error (even if you set up the path for `LazyThetaStarPython` correctly)
+```
+    import LazyThetaStarPython
+ModuleNotFoundError: No module named 'LazyThetaStarPython'
+```
+
+This problem is caused by the inconsistency between the python version of pybind11 and the python version of the local environment. Please refer to this [page](https://pybind11.readthedocs.io/en/stable/faq.html?highlight=cmake#cmake-doesn-t-detect-the-right-python-version).
+
+My solution is to use
+```
+cmake .. -DPYTHON_EXECUTABLE=$(which python3)
+```
+to make cmake be aware of the default python3 version. This is also the default python3 version for pybind11.
 
 
 **C++**
